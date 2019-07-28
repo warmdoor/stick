@@ -11,6 +11,8 @@ public class Player implements GameActor {
     private ShapeRenderer shapeRenderer;
     private boolean isMoving = false;
     private float angle;
+    private float controllerXValue;
+    private float controllerYValue;
 
     Player(float startX, float startY) {
         x = startX;
@@ -43,6 +45,8 @@ public class Player implements GameActor {
 
     public void startMovement(Vector2 delta) {
         angle = delta.angleRad();
+        controllerXValue = delta.x;
+        controllerYValue = delta.y;
         isMoving = true;
     }
 
@@ -63,5 +67,11 @@ public class Player implements GameActor {
 
     public float getAngle() {
         return angle;
+    }
+    public float getControllerXValue() {
+        return controllerXValue;
+    }
+    public float getControllerYValue() {
+        return controllerYValue;
     }
 }

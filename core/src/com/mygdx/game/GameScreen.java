@@ -2,14 +2,11 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Input.InputComponent;
 
 public class GameScreen extends ScreenAdapter {
@@ -56,9 +53,8 @@ public class GameScreen extends ScreenAdapter {
         player.clampPosition(WIDTH, HEIGHT);
         player.draw();
         batch.begin();
-        font.draw(batch, "Angle: " + player.getAngle(), 50, 50);
-        font.draw(batch, "Sin: " + MathUtils.sin(player.getAngle()), 50, 90);
-        font.draw(batch, "Cos: " + MathUtils.cos(player.getAngle()), 50, 130);
+        font.draw(batch, "X: " + player.getControllerXValue(), 50, 50);
+        font.draw(batch, "Y: " + player.getControllerYValue(), 50, 90);
         batch.end();
     }
 
