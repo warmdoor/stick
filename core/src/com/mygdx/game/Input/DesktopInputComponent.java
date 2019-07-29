@@ -50,10 +50,7 @@ public class DesktopInputComponent implements InputComponent {
         float y = controller.getAxis(1);
         if (Math.abs(x) < DEAD_ZONE && Math.abs(x) > 0) x = 0;
         if (Math.abs(y) < DEAD_ZONE && Math.abs(y) > 0) y = 0;
-        delta = new Vector2(x, y);
-        if (delta.equals(origin)) {
-            hasInput = false;
-        }
+        checkDelta(x, y);
     }
 
     private void checkKeyboardState() {
@@ -63,6 +60,10 @@ public class DesktopInputComponent implements InputComponent {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) x = 1;
         if (Gdx.input.isKeyPressed(Input.Keys.W)) y = -1;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y = 1;
+        checkDelta(x, y);
+    }
+
+    private void checkDelta(float x, float y) {
         delta = new Vector2(x, y);
         if (delta.equals(origin)) {
             hasInput = false;
