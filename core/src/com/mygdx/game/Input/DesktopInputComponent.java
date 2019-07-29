@@ -1,31 +1,46 @@
 package com.mygdx.game.Input;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DesktopInputComponent implements InputComponent {
     private Vector2 origin;
     private Vector2 delta;
     private boolean hasInput = false;
+    private boolean usesController = false;
     private Controller controller;
+    private List<Integer> activeKeys;
 
     private static final float DEAD_ZONE = 0.05f;
 
     public DesktopInputComponent() {
-        controller = Controllers.getControllers().get(0);
-        controller.addListener(new ControllerHandler());
+        Array<Controller> controllers = Controllers.getControllers();
+        if (!controllers.isEmpty()) {
+            controller = controllers.get(0);
+            controller.addListener(new ControllerHandler());
+            usesController = true;
+        }
+        activeKeys = Arrays.asList(Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D);
         origin = new Vector2(0, 0);
     }
 
     @Override
     public boolean hasInput() {
         if (hasInput) {
-            checkControllerState();
+            if (usesController) {
+                checkControllerState();
+            }
+            checkKeyboardState();
         }
         return hasInput;
     }
@@ -41,6 +56,19 @@ public class DesktopInputComponent implements InputComponent {
         }
     }
 
+    private void checkKeyboardState() {
+        float x = 0;
+        float y = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) x = -1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) x = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) y = -1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) y = 1;
+        delta = new Vector2(x, y);
+        if (delta.equals(origin)) {
+            hasInput = false;
+        }
+    }
+
     @Override
     public Vector2 getDelta() {
         return delta;
@@ -48,7 +76,8 @@ public class DesktopInputComponent implements InputComponent {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (activeKeys.contains(keycode)) hasInput = true;
+        return true;
     }
 
     @Override
@@ -90,12 +119,12 @@ public class DesktopInputComponent implements InputComponent {
 
         @Override
         public void connected(Controller controller) {
-            // stub
+            usesController = true;
         }
 
         @Override
         public void disconnected(Controller controller) {
-            // stub
+            usesController = false;
         }
 
         @Override
