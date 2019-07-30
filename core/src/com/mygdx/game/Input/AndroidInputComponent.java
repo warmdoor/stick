@@ -7,6 +7,7 @@ public class AndroidInputComponent implements InputComponent, InputProcessor {
     private Vector2 origin;
     private Vector2 delta;
     private boolean hasInput = false;
+    private boolean isShooting = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -59,12 +60,17 @@ public class AndroidInputComponent implements InputComponent, InputProcessor {
         return delta;
     }
 
-    public Vector2 getOrigin() {
-        return origin;
-    }
-
     @Override
     public boolean hasInput() {
         return hasInput;
+    }
+
+    @Override
+    public boolean isShooting() {
+        return isShooting;
+    }
+
+    public Vector2 getOrigin() {
+        return origin;
     }
 }

@@ -3,27 +3,35 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Input.InputComponent;
 
 public class Player implements GameActor {
     private float x;
     private float y;
     private float currentSpeed;
-    private ShapeRenderer shapeRenderer;
-    private boolean isMoving = false;
     private float angle;
     private float controllerXValue;
     private float controllerYValue;
+    private ShapeRenderer shapeRenderer;
+    private InputComponent inputHandler;
+    private boolean isMoving = false;
 
-    Player(float startX, float startY) {
+    Player(float startX, float startY, InputComponent inputHandler) {
         x = startX;
         y = startY;
         currentSpeed = 15;
+        this.inputHandler = inputHandler;
         shapeRenderer = new ShapeRenderer();
     }
 
     @Override
     public void draw() {
         drawDebug();
+    }
+
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
     }
 
     private void drawDebug() {
@@ -68,10 +76,20 @@ public class Player implements GameActor {
     public float getAngle() {
         return angle;
     }
+
     public float getControllerXValue() {
         return controllerXValue;
     }
+
     public float getControllerYValue() {
         return controllerYValue;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }

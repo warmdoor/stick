@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Input.InputComponent;
 
 public class GameScreen extends ScreenAdapter {
@@ -18,6 +20,7 @@ public class GameScreen extends ScreenAdapter {
     private BitmapFont font;
     private Player player;
     private InputComponent inputHandler;
+    private Array<Shot> shots;
 
     GameScreen(Game game, InputComponent inputComponent) {
         this.game = game;
@@ -26,7 +29,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        player = new Player(WIDTH / 2, HEIGHT / 2);
+        player = new Player(WIDTH / 2, HEIGHT / 2, inputHandler);
         font = new BitmapFont(Gdx.files.internal("noto_serif.fnt"));
         font.setColor(Color.WHITE);
         batch = new SpriteBatch();
@@ -34,13 +37,21 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        updatePlayer();
+        update();
         drawDebug();
+    }
+
+    private void update() {
+        updatePlayer();
+        shots.forEach(s -> s.update());
     }
 
     private void updatePlayer() {
         if (inputHandler.hasInput()) {
             player.startMovement(inputHandler.getDelta());
+            if (inputHandler.isShooting()) {
+                shots.add(new Shot(player.getX(), player.getY(), inputHandler.getDelta()));
+            }
         } else {
             player.stopMovement();
         }

@@ -5,5 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public interface InputComponent extends InputProcessor {
     boolean hasInput();
+    boolean isShooting();
     Vector2 getDelta();
 }

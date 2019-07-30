@@ -17,6 +17,7 @@ public class DesktopInputComponent implements InputComponent {
     private Vector2 origin;
     private Vector2 delta;
     private boolean hasInput = false;
+    private boolean isShooting = false;
     private boolean usesController = false;
     private Controller controller;
     private List<Integer> activeKeys;
@@ -30,7 +31,8 @@ public class DesktopInputComponent implements InputComponent {
             controller.addListener(new ControllerHandler());
             usesController = true;
         }
-        activeKeys = Arrays.asList(Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D);
+        activeKeys = Arrays.asList(Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D,
+                Input.Keys.SPACE);
         origin = new Vector2(0, 0);
     }
 
@@ -43,6 +45,11 @@ public class DesktopInputComponent implements InputComponent {
             checkKeyboardState();
         }
         return hasInput;
+    }
+
+    @Override
+    public boolean isShooting() {
+        return isShooting;
     }
 
     private void checkControllerState() {
@@ -60,6 +67,7 @@ public class DesktopInputComponent implements InputComponent {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) x = 1;
         if (Gdx.input.isKeyPressed(Input.Keys.W)) y = -1;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) isShooting = true;
         checkDelta(x, y);
     }
 
