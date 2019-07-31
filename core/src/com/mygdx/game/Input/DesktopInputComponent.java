@@ -158,7 +158,12 @@ public class DesktopInputComponent implements InputComponent {
         if (keycode == Input.Keys.W || keycode == Input.Keys.S) {
             moveY = 0;
         }
-        if (keycode == Input.Keys.SPACE) hasShot = false;
+        if (keycode == Input.Keys.NUMPAD_4 || keycode == Input.Keys.NUMPAD_1 ||
+        keycode == Input.Keys.NUMPAD_2 || keycode == Input.Keys.NUMPAD_3 ||
+        keycode == Input.Keys.NUMPAD_6 || keycode == Input.Keys.NUMPAD_9 ||
+        keycode == Input.Keys.NUMPAD_8 || keycode == Input.Keys.NUMPAD_7) {
+            hasShot = false;
+        }
         moveDelta = new Vector2(moveX, moveY);
         return false;
     }
