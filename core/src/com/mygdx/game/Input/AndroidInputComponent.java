@@ -12,6 +12,8 @@ public class AndroidInputComponent implements InputComponent, InputProcessor {
     private Vector2 shootOrigin;
     private Vector2 moveDelta;
     private Vector2 shootDelta;
+    private int movePointer = -1;
+    private int shootPointer = -1;
     private boolean hasMovementInput = false;
     private boolean isShooting = false;
 
@@ -36,24 +38,37 @@ public class AndroidInputComponent implements InputComponent, InputProcessor {
             hasMovementInput = true;
             moveDelta = new Vector2(0, 0);
             moveOrigin = new Vector2(screenX, screenY);
+            movePointer = pointer;
         } else if (screenX > WIDTH / 2 && screenY > HEIGHT / 2) {
             isShooting = true;
             shootDelta = new Vector2(0, 0);
             shootOrigin = new Vector2(screenX, screenY);
+            shootPointer = pointer;
         }
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        hasMovementInput = false;
+        if (pointer == movePointer) {
+            hasMovementInput = false;
+            movePointer = -1;
+        } else if (pointer == shootPointer) {
+            isShooting = false;
+            shootPointer = -1;
+        }
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector2 newTouch = new Vector2(screenX, screenY);
-        moveDelta = newTouch.cpy().sub(moveOrigin);
+        if (pointer == movePointer) {
+            Vector2 newTouch = new Vector2(screenX, screenY);
+            moveDelta = newTouch.cpy().sub(moveOrigin);
+        } else if (pointer == shootPointer) {
+            Vector2 newTouch = new Vector2(screenX, screenY);
+            shootDelta = newTouch.cpy().sub(shootOrigin);
+        }
         return true;
     }
 
@@ -74,7 +89,7 @@ public class AndroidInputComponent implements InputComponent, InputProcessor {
 
     @Override
     public Vector2 getShootDelta() {
-        return null;
+        return shootDelta;
     }
 
     @Override

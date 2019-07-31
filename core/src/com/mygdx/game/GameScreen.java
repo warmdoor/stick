@@ -57,7 +57,6 @@ public class GameScreen extends ScreenAdapter {
         inputHandler.update();
         if (inputHandler.hasShot()) {
             shots.add(new Shot(player.getX(), player.getY(), inputHandler.getShootDelta()));
-            inputHandler.setHasShot(false);
         }
     }
 
