@@ -53,8 +53,6 @@ public class Player implements GameActor {
 
     public void startMovement(Vector2 delta) {
         angle = delta.angleRad();
-        controllerXValue = delta.x;
-        controllerYValue = delta.y;
         isMoving = true;
     }
 

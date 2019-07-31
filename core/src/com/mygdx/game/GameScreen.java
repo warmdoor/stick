@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Input.InputComponent;
 
@@ -25,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
     GameScreen(Game game, InputComponent inputComponent) {
         this.game = game;
         this.inputHandler = inputComponent;
+        shots = new Array<Shot>();
     }
 
     @Override
@@ -43,17 +43,21 @@ public class GameScreen extends ScreenAdapter {
 
     private void update() {
         updatePlayer();
-        shots.forEach(s -> s.update());
+        for (Shot shot : shots) {
+            shot.update();
+        }
     }
 
     private void updatePlayer() {
-        if (inputHandler.hasInput()) {
-            player.startMovement(inputHandler.getDelta());
-            if (inputHandler.isShooting()) {
-                shots.add(new Shot(player.getX(), player.getY(), inputHandler.getDelta()));
-            }
+        if (inputHandler.hasMovementInput()) {
+            player.startMovement(inputHandler.getMoveDelta());
         } else {
             player.stopMovement();
+        }
+        inputHandler.update();
+        if (inputHandler.hasShot()) {
+            shots.add(new Shot(player.getX(), player.getY(), inputHandler.getShootDelta()));
+            inputHandler.setHasShot(false);
         }
     }
 
@@ -63,10 +67,9 @@ public class GameScreen extends ScreenAdapter {
         player.updatePosition();
         player.clampPosition(WIDTH, HEIGHT);
         player.draw();
-        batch.begin();
-        font.draw(batch, "X: " + player.getControllerXValue(), 50, 50);
-        font.draw(batch, "Y: " + player.getControllerYValue(), 50, 90);
-        batch.end();
+        for (Shot shot : shots) {
+            shot.draw();
+        }
     }
 
     @Override
