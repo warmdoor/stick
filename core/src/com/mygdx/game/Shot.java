@@ -11,17 +11,12 @@ public class Shot implements GameActor {
     private float currentSpeed;
     private ShapeRenderer shapeRenderer;
 
-    Shot(float x, float y, Vector2 delta) {
-        this.x = x;
-        this.y = y;
+    Shot(float startX, float startY, Vector2 delta) {
+        this.x = startX;
+        this.y = startY;
         this.angle = delta.angleRad();
         currentSpeed = 20;
         shapeRenderer = new ShapeRenderer();
-    }
-
-    @Override
-    public void draw() {
-        drawDebug();
     }
 
     private void drawDebug() {
@@ -33,6 +28,11 @@ public class Shot implements GameActor {
     public void update() {
         x += MathUtils.cos(angle) * currentSpeed;
         y -= MathUtils.sin(angle) * currentSpeed;
+    }
+
+    @Override
+    public void draw() {
+        drawDebug();
     }
 
     @Override

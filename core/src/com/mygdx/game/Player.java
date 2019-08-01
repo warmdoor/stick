@@ -10,8 +10,6 @@ public class Player implements GameActor {
     private float y;
     private float currentSpeed;
     private float angle;
-    private float controllerXValue;
-    private float controllerYValue;
     private ShapeRenderer shapeRenderer;
     private InputComponent inputHandler;
     private boolean isMoving = false;
@@ -69,18 +67,6 @@ public class Player implements GameActor {
         if (y >= height) {
             y = height;
         }
-    }
-
-    public float getAngle() {
-        return angle;
-    }
-
-    public float getControllerXValue() {
-        return controllerXValue;
-    }
-
-    public float getControllerYValue() {
-        return controllerYValue;
     }
 
     public float getX() {
